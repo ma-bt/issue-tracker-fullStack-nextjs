@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 import { GiLadybug } from "react-icons/gi";
+import classnames  from "classnames";
 
 const NavBar = () => {
   const navList = [
@@ -13,6 +16,9 @@ const NavBar = () => {
       href: "/issues",
     },
   ];
+
+  const currentPath = usePathname();
+  console.log(currentPath);
   return (
     <nav className="flex justify-between border-b py-5 px-6 items-center">
       <Link href={"/"}>
@@ -24,7 +30,14 @@ const NavBar = () => {
             <li key={index}>
               <Link
                 href={e.href}
-                className="text-zinc-500 hover:text-zinc-800 transition-colors"
+                className={classnames({
+                    "text-zinc-800": e.href === currentPath ,
+                    "text-zinc-500": e.href !== currentPath,
+                    "hover:text-zinc-800 transition-colors font-semibold ": true ,
+                })}
+                    
+                    // ` ${currentPath === e.href ? " text-zinc-800 " : " text-zinc-500 "}  `
+                
               >
                 {e.label}
               </Link>
