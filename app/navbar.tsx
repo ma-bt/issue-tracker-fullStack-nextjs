@@ -34,9 +34,7 @@ const NavBar = () => {
                     "text-zinc-800": e.href === currentPath ,
                     "text-zinc-500": e.href !== currentPath,
                     "hover:text-zinc-800 transition-colors font-semibold ": true ,
-                })}
-                    
-                    // ` ${currentPath === e.href ? " text-zinc-800 " : " text-zinc-500 "}  `
+                })} 
                 
               >
                 {e.label}
