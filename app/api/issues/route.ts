@@ -8,8 +8,8 @@ const createIssueSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
   //this method parses the JSON-formatted body into a JavaScript object
+  const body = await request.json();
   const validation = createIssueSchema.safeParse(body);
 
   if (!validation.success)
@@ -18,14 +18,15 @@ export async function POST(request: NextRequest) {
       statusText: "Bad request",
     });
 
- 
-
+  //inserting new issue into the database after validating the request
   const newIssue = await prisma.issue.create({
     data: {
       title: body.title,
       description: body.description,
     },
+    
   });
 
+  //returning response to the client
   return NextResponse.json(newIssue, { status: 201 });
 }
