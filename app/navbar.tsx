@@ -18,7 +18,7 @@ const NavBar = () => {
   ];
 
   const currentPath = usePathname();
-  console.log(currentPath);
+
   return (
     <nav className="flex justify-between border-b py-5 px-6 items-center ">
       <Link href={"/"}>
