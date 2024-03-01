@@ -24,3 +24,16 @@ enum Status {
   IN_PROGRESS
   CLOSED
 }
+
+model User {
+  id  String  @id @default(cuid())
+  name String?
+  email String? @unique
+  password String?
+  confirmPassword String?
+  emailVerified DateTime?
+  image String?
+  createdAT DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+}
