@@ -33,10 +33,10 @@ const IssuesPage = () => {
       <div className="flex justify-between items-center">
         <h3 className="font-medium text-xl">Issue Table</h3>
         <Button
-          className="flex  justify-end items-center max-w-28"
+          className="flex  justify-end items-center px-3"
           onClick={() => router.push("issues/new-issue")}
         >
-          New Issue
+          Add New Issue
         </Button>
       </div>
 
@@ -44,6 +44,7 @@ const IssuesPage = () => {
         <Table.Root variant="surface">
           <Table.Header>
             <Table.Row>
+              <Table.ColumnHeaderCell>Id</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Description</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Created At</Table.ColumnHeaderCell>
@@ -51,19 +52,17 @@ const IssuesPage = () => {
           </Table.Header>
 
           <Table.Body>
-            {
-              data?.map((a: IssueData) => {
-                console.log(a, "a");
-                return (
-                  <Table.Row key={a.id}>
-                    <Table.RowHeaderCell>{a.title}</Table.RowHeaderCell>
-                    <Table.Cell>{a.description}</Table.Cell>
-                    <Table.Cell>{a.createdAt}</Table.Cell>
-                  </Table.Row>
-                );
-              })}
-
-            
+            {data?.map((a: IssueData) => {
+              console.log(a, "a");
+              return (
+                <Table.Row key={a.id}>
+                  <Table.RowHeaderCell>{a.id}</Table.RowHeaderCell>
+                  <Table.Cell>{a.title}</Table.Cell>
+                  <Table.Cell width={600}>{a.description}</Table.Cell>
+                  <Table.Cell>{a.createdAt}</Table.Cell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table.Root>
       </div>
