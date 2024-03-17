@@ -22,6 +22,7 @@
     "easymde": "^2.18.0",
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.1.0",
     "postcss": "8.4.35",
     "prisma": "^5.11.0-dev.8",
@@ -35,6 +36,7 @@
     "zod": "3.22.3"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.2.2"
+    "@types/crypto-js": "^4.2.2",
+    "@types/jsonwebtoken": "^9.0.6"
   }
 }
