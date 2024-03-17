@@ -3,7 +3,7 @@ import { SHA256 as sha256 } from "crypto-js";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-const registerSchema = z
+export const registerSchema = z
   .object({
     name: z.string().min(3, "Name is required").max(255),
     email: z.string().email(),
