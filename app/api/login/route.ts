@@ -4,6 +4,7 @@ import { SHA256 as sha256 } from "crypto-js";
 import { NextRequest, NextResponse } from "next/server";
 import { hashPassword } from "../register/route";
 import jwt from "jsonwebtoken";
+import { loginSchema } from "@/app/validation-schema";
 
 const secretKey = process.env.AUTH_SECRET;
 export const generateJWTToken = (user) => {
@@ -19,13 +20,6 @@ export const generateJWTToken = (user) => {
   return jwt.sign(payload, secretKey, options);
 };
 
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(5, { message: "Password is too short" })
-    .max(20, { message: "Password is too long" }),
-});
 
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.json();
