@@ -80,7 +80,7 @@ const LoginPage = () => {
           Don't have an account?
           <span
             className="font-medium"
-            onClick={() => router.push("/register")}
+            onClick={() => router.push("/sign-up")}
           >
             Sign Up
           </span>

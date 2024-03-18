@@ -2,7 +2,6 @@
 import { Button, Callout, Text, TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { loginSchema } from "../validation-schema";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -11,7 +10,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { registerSchema } from "../api/register/route";
 
 const SignUpPage = () => {
-  type LoginInput = z.infer<typeof registerSchema>;
+  type RegisterInput = z.infer<typeof registerSchema>;
   const router = useRouter();
   const [error, setError] = useState("");
 
@@ -19,7 +18,7 @@ const SignUpPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginInput>({
+  } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
   });
 
@@ -28,7 +27,9 @@ const SignUpPage = () => {
       onSubmit={handleSubmit(async (data) => {
         console.log(data, "data");
         try {
-         await axios.post("/api/register", data);
+          const response = await axios.post("/api/register", data);
+        console.log(response.data, "data");
+
           router.push("/login");
         } catch (error) {
           return setError("Something went Wrong");
@@ -37,7 +38,9 @@ const SignUpPage = () => {
       className="flex flex-col gap-3  justify-center items-center my-4"
     >
       <div className="max-w-[600px] min-w-[500px]  border-2 rounded-md p-6 flex flex-col gap-3">
-        <h3 className="text-3xl font-medium py-2 flex justify-center">Sign Up</h3>
+        <h3 className="text-3xl font-medium py-2 flex justify-center">
+          Sign Up
+        </h3>
         {error && (
           <Callout.Root color="crimson" className="my-1">
             <Callout.Icon>
@@ -57,7 +60,6 @@ const SignUpPage = () => {
             </Text>
           )}
         </div>
-
 
         <div className="flex flex-col gap-1  ">
           <label className="text-sm">Email:</label>
@@ -84,9 +86,9 @@ const SignUpPage = () => {
         </div>
 
         <div className="flex flex-col gap-1  ">
-          <label className="text-sm">Confim Password:</label>
+          <label className="text-sm">Confirm Password:</label>
           <TextField.Root color="violet">
-            <TextField.Input {...register("email")} />
+            <TextField.Input {...register("confirmPassword")} />
           </TextField.Root>
           {errors.confirmPassword && (
             <Text color="red" size={"1"}>
@@ -97,7 +99,6 @@ const SignUpPage = () => {
         <Button type="submit" size={"2"} className="px-3" color="violet">
           Submit
         </Button>
-        
       </div>
     </form>
   );
