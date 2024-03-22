@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { Prisma } from "@prisma/client";
 import { SHA256 as sha256 } from "crypto-js";
 import { NextRequest, NextResponse } from "next/server";
 import { hashPassword } from "../register/route";
 import jwt from "jsonwebtoken";
 import { loginSchema } from "@/app/validation-schema";
+import prisma from "@/prisma/client";
 
 const secretKey = process.env.AUTH_SECRET;
 export const generateJWTToken = (user) => {
@@ -20,7 +20,6 @@ export const generateJWTToken = (user) => {
   return jwt.sign(payload, secretKey, options);
 };
 
-
 export async function POST(request: NextRequest, response: NextResponse) {
   const body = await request.json();
   const validation = loginSchema.safeParse(body);
@@ -33,13 +32,13 @@ export async function POST(request: NextRequest, response: NextResponse) {
   }
 
   try {
-    const user = await prisma?.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email: body.email,
       },
     });
 
-    if (!user?.email) {
+    if (!user) {
       return NextResponse.json({
         status: 401,
         statusbar: "User Not Found",
@@ -47,7 +46,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
     }
 
     const Password = hashPassword(body.password);
-    console.log(Password,user.password, "pass");
+    console.log(Password, user.password, "pass");
 
     if (Password !== user.password) {
       return NextResponse.json({

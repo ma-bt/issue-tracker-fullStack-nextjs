@@ -8,11 +8,17 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdErrorOutline } from "react-icons/md";
 import { registerSchema } from "../api/register/route";
+import { useMutation } from "react-query";
+import { data } from "autoprefixer";
 
 const SignUpPage = () => {
   type RegisterInput = z.infer<typeof registerSchema>;
   const router = useRouter();
   const [error, setError] = useState("");
+
+  const { mutateAsync, isLoading } = useMutation((data: RegisterInput) =>
+    axios.post("/api/register", data)
+  );
 
   const {
     register,
@@ -27,8 +33,8 @@ const SignUpPage = () => {
       onSubmit={handleSubmit(async (data) => {
         console.log(data, "data");
         try {
-          const response = await axios.post("/api/register", data);
-        console.log(response.data, "data");
+          const response = await mutateAsync(data);
+          console.log(response.data, "data");
 
           router.push("/login");
         } catch (error) {
@@ -97,7 +103,7 @@ const SignUpPage = () => {
           )}
         </div>
         <Button type="submit" size={"2"} className="px-3" color="violet">
-          Submit
+          {isLoading ? "Loading" : "Submit"}
         </Button>
       </div>
     </form>

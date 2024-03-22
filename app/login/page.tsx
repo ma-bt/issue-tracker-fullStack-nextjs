@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MdErrorOutline } from "react-icons/md";
+import { useMutation } from "react-query";
 
 const LoginPage = () => {
   type LoginInput = z.infer<typeof loginSchema>;
@@ -22,16 +23,21 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  const { mutateAsync, isLoading } = useMutation((data: LoginInput) =>
+    axios.post("/api/login", data)
+  );
+
+
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
         console.log(data, "data");
         try {
-          const response = await axios.post("/api/login", data);
+          const response = await mutateAsync(data);
           const { token } = response.data;
           localStorage.setItem("token", token);
           console.log(token);
-          if (token) {
+          if (token !== undefined) {
             router.push("/");
           } else setError("User not found");
         } catch (error) {
@@ -74,14 +80,11 @@ const LoginPage = () => {
           )}
         </div>
         <Button type="submit" size={"2"} className="px-3" color="violet">
-          Submit
+          {isLoading ? "loading" : "Submit"}
         </Button>
         <p className="flex justify-center text-sm">
           Don't have an account?
-          <span
-            className="font-medium"
-            onClick={() => router.push("/sign-up")}
-          >
+          <span className="font-medium" onClick={() => router.push("/sign-up")}>
             Sign Up
           </span>
         </p>

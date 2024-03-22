@@ -1,7 +1,9 @@
-import { Prisma } from "@prisma/client";
 import { SHA256 as sha256 } from "crypto-js";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import prisma from "@/prisma/client";
+import { Prisma } from "@prisma/client";
+
 
 export const registerSchema = z
   .object({
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   }
 
   try {
-    const newUser = await prisma?.user.create({
+    const newUser = await prisma.user.create({
       data: {
         name: body.name,
         email: body.email,
